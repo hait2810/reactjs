@@ -28,11 +28,33 @@ const Detail = (props: DetailProps) => {
         }
         getProduct();
     },[])
+    let cart = [];
     const onOrder:SubmitHandler = async () => {
             const {data} = await detail(id);
-            let cart = []
-            cart.push(data)
-            localStorage.setItem("cart", JSON.stringify(cart));
+           
+            
+            const exitsProduct =  cart.find(item => item.id === data.id);
+            if(exitsProduct) {
+                exitsProduct.quantity++;
+                localStorage.setItem("cart",JSON.stringify(cart));
+            }
+          
+            if(localStorage.getItem("cart")){
+                cart = JSON.parse(localStorage.getItem("cart"));
+           }else{
+               cart.push({...data,quantity:1});
+               localStorage.setItem("cart",JSON.stringify(cart));
+           }
+
+           
+            
+        
+            
+            // if(!exitsProduct) {
+            //     localStorage.setItem("cart", JSON.stringify({...data, quantity:1}));
+            // }else{
+            //     exitsProduct.quantity += data.quantity++;
+            // }
             
             
             
