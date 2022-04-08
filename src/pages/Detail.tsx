@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import { detail } from '../api/products'
+import {useForm, SubmitHandler} from 'react-hook-form';
 
 
 type DetailProps = {
@@ -18,7 +19,7 @@ type ProductType = {
 const Detail = (props: DetailProps) => {
     const {id} = useParams();
     const [product,setProduct] = useState<ProductType>();
-   
+    const {handleSubmit} = useForm();
     useEffect(() => {
         const getProduct = async () => {
             const response = await detail(id);
@@ -27,6 +28,15 @@ const Detail = (props: DetailProps) => {
         }
         getProduct();
     },[])
+    const onOrder:SubmitHandler = async () => {
+            const {data} = await detail(id);
+            let cart = []
+            cart.push(data)
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+            
+            
+    }
    return (
     <div>
          <div className="detail-content">
@@ -49,10 +59,10 @@ const Detail = (props: DetailProps) => {
                    
                 
                     <div className="d-order distance">
-                      <form action="">
-                           <h5>Số lượng :</h5>
-                          <input type="number" value="1" name="" id=""/> <br />
-                          <button>Thêm vào giỏ hàng</button>
+                      <form onSubmit={handleSubmit(onOrder)}>
+                         
+                          
+                          <button >Thêm vào giỏ hàng</button>
                       </form>
                     </div>
                     <div className="description">
