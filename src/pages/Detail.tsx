@@ -45,7 +45,7 @@ const Detail = (props: DetailProps) => {
            }else{
                cart.push({...data,quantity:1});
                localStorage.setItem("cart",JSON.stringify(cart));
-               
+               return false;
            }
           
            if(!exitsProduct) {
